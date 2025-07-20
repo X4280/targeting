@@ -1,107 +1,126 @@
-"use client";
-import { useState, useEffect } from "react";
-import Papa from "papaparse";
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Client ➜ Targeting Lookup</title>
 
-// Fetch + parse the master CSV stored in /public/clients.csv
-async function loadClients() {
-  const res = await fetch("/clients.csv"); // served from /public
-  const text = await res.text();
-  return new Promise((resolve) => {
-    Papa.parse(text, {
-      header: true,
-      complete: (results) => {
-        const cleaned = results.data
-          .filter((row) => row.Client && row.Targetting)
-          .map((row) => ({
-            name: row.Client.trim(),
-            location: row.Targetting.trim(),
-            radius: row.Radius?.trim() || null,
-          }));
-        resolve(cleaned);
-      },
-    });
-  });
-}
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-50">
+    <div id="root"></div>
 
-export default function Page() {
-  const [clients, setClients] = useState([]);
-  const [query, setQuery] = useState("");
-  const [copied, setCopied] = useState(false);
+    <!-- React + React-DOM (production builds) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
-  useEffect(() => {
-    loadClients().then(setClients);
-  }, []);
+    <!-- Babel (compile JSX in the browser) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  const filtered = clients.filter((c) =>
-    c.name.toLowerCase().includes(query.toLowerCase())
-  );
+    <!-- PapaParse for CSV parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-  // ZIP / County rows ⇒ no radius value
-  const eligible = filtered.filter((c) => !c.radius);
+    <!-- Our app code -->
+    <script type="text/babel">
+      const { useState, useEffect } = React;
 
-  const handleCopy = () => {
-    if (eligible.length === 0) return;
-    navigator.clipboard.writeText(eligible.map((c) => c.location).join("\n"));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+      // Fetch + parse clients.csv from the same directory
+      async function loadClients() {
+        const res = await fetch("clients.csv");
+        const text = await res.text();
+        return new Promise((resolve) => {
+          Papa.parse(text, {
+            header: true,
+            complete: (results) => {
+              const cleaned = results.data
+                .filter((row) => row.Client && row.Targetting)
+                .map((row) => ({
+                  name: row.Client.trim(),
+                  location: row.Targetting.trim(),
+                  radius: row.Radius?.trim() || null,
+                }));
+              resolve(cleaned);
+            },
+          });
+        });
+      }
 
-  return (
-    <main className="min-h-screen bg-slate-50 flex flex-col items-center p-8 gap-8">
-      <h1 className="text-3xl font-bold text-slate-800">
-        Client ➜ Targeting Lookup
-      </h1>
+      function App() {
+        const [clients, setClients] = useState([]);
+        const [query, setQuery] = useState("");
+        const [copied, setCopied] = useState(false);
 
-      <input
-        type="text"
-        placeholder="Type client name (e.g. Essential)"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="w-full max-w-md rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400"
-      />
+        useEffect(() => {
+          loadClients().then(setClients);
+        }, []);
 
-      {query && (
-        <div className="w-full max-w-2xl">
-          {eligible.length > 0 && (
-            <button
-              onClick={handleCopy}
-              className="mb-4 inline-flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white transition hover:bg-sky-700 focus:outline-none"
-            >
-              {copied ? "Copied!" : "Copy locations"}
-            </button>
-          )}
+        const filtered = clients.filter((c) =>
+          c.name.toLowerCase().includes(query.toLowerCase())
+        );
 
-          {filtered.length > 0 ? (
-            <table className="w-full text-left border-collapse shadow-lg">
-              <thead>
-                <tr className="bg-sky-100">
-                  <th className="p-3">Client</th>
-                  <th className="p-3">Location</th>
-                  <th className="p-3">Radius</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((c, idx) => (
-                  <tr
-                    key={idx}
-                    className={
-                      idx % 2 === 0 ? "bg-white" : "bg-slate-50/60"
-                    }
+        // ZIP / County rows ⇒ no radius value
+        const eligible = filtered.filter((c) => !c.radius);
+
+        const handleCopy = () => {
+          if (eligible.length === 0) return;
+          navigator.clipboard.writeText(eligible.map((c) => c.location).join("\n"));
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        };
+
+        return (
+          <main className="min-h-screen flex flex-col items-center p-8 gap-8">
+            <h1 className="text-3xl font-bold text-slate-800">Client ➜ Targeting Lookup</h1>
+
+            <input
+              type="text"
+              placeholder="Type client name (e.g. Essential)"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full max-w-md rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            />
+
+            {query && (
+              <div className="w-full max-w-2xl">
+                {eligible.length > 0 && (
+                  <button
+                    onClick={handleCopy}
+                    className="mb-4 inline-flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white transition hover:bg-sky-700 focus:outline-none"
                   >
-                    <td className="p-3 font-medium text-slate-800">{c.name}</td>
-                    <td className="p-3 text-slate-700">{c.location}</td>
-                    <td className="p-3 text-slate-700">
-                      {c.radius ? c.radius : "—"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p className="text-slate-500 mt-4">No matches found.</p>
-          )}
-        </div>
-      )}
-    </main>
-  );
-}
+                    {copied ? "Copied!" : "Copy locations"}
+                  </button>
+                )}
+
+                {filtered.length > 0 ? (
+                  <table className="w-full text-left border-collapse shadow-lg">
+                    <thead>
+                      <tr className="bg-sky-100">
+                        <th className="p-3">Client</th>
+                        <th className="p-3">Location</th>
+                        <th className="p-3">Radius</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtered.map((c, idx) => (
+                        <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-slate-50/60"}>
+                          <td className="p-3 font-medium text-slate-800">{c.name}</td>
+                          <td className="p-3 text-slate-700">{c.location}</td>
+                          <td className="p-3 text-slate-700">{c.radius ?? "—"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="text-slate-500 mt-4">No matches found.</p>
+                )}
+              </div>
+            )}
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
