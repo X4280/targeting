@@ -11,7 +11,7 @@
   <body class="bg-slate-50">
     <div id="root"></div>
 
-    <!-- React + React-DOM (production builds) -->
+    <!-- React + React‑DOM (production builds) -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
@@ -21,22 +21,22 @@
     <!-- PapaParse for CSV parsing -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-    <!-- Our app code -->
+    <!-- App code (static CSV in repo) -->
     <script type="text/babel">
       const { useState, useEffect } = React;
 
-      // ► Google Sheet CSV endpoint (first sheet)
-      const SHEET_CSV =
-        "https://docs.google.com/spreadsheets/d/1whsN_mzDQRCOsf-ukKHltaYrW3IVjQseT3DW__sx4LY/gviz/tq?tqx=out:csv";
+      // ▲ Local file committed to GitHub/Vercel
+      const CSV_URL = "clients.csv"; // lives next to index.html
 
       async function loadClients() {
-        const res = await fetch(SHEET_CSV);
+        const res = await fetch(CSV_URL);
         const text = await res.text();
         return new Promise((resolve) => {
           Papa.parse(text, {
             header: true,
-            complete: (results) => {
-              const cleaned = results.data
+            skipEmptyLines: true,
+            complete: ({ data }) => {
+              const cleaned = data
                 .filter((row) => row.Client && row.Targetting)
                 .map((row) => {
                   const excludeFlag = (row.Exclude || row.exclude || row.Type || "")
@@ -70,7 +70,6 @@
           c.name.toLowerCase().includes(query.toLowerCase())
         );
 
-        // For copy buttons — ZIP/County rows, no radius
         const includedRows = filtered.filter((c) => !c.radius && !c.exclude);
         const excludedRows = filtered.filter((c) => !c.radius && c.exclude);
 
