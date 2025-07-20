@@ -25,9 +25,12 @@
     <script type="text/babel">
       const { useState, useEffect } = React;
 
-      // Fetch + parse clients.csv from the same directory
+      // ► Google Sheet CSV endpoint (first sheet)
+      const SHEET_CSV =
+        "https://docs.google.com/spreadsheets/d/1whsN_mzDQRCOsf-ukKHltaYrW3IVjQseT3DW__sx4LY/gviz/tq?tqx=out:csv";
+
       async function loadClients() {
-        const res = await fetch("clients.csv");
+        const res = await fetch(SHEET_CSV);
         const text = await res.text();
         return new Promise((resolve) => {
           Papa.parse(text, {
@@ -36,11 +39,10 @@
               const cleaned = results.data
                 .filter((row) => row.Client && row.Targetting)
                 .map((row) => {
-                  const excludeFlag =
-                    (row.Exclude || row.exclude || row.Type || "")
-                      .toString()
-                      .toLowerCase()
-                      .includes("exclude");
+                  const excludeFlag = (row.Exclude || row.exclude || row.Type || "")
+                    .toString()
+                    .toLowerCase()
+                    .includes("exclude");
                   return {
                     name: row.Client.trim(),
                     location: row.Targetting.trim(),
@@ -147,4 +149,3 @@
     </script>
   </body>
 </html>
-
