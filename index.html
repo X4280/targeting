@@ -11,7 +11,7 @@
   <body class="bg-slate-50">
     <div id="root"></div>
 
-    <!-- React + React‑DOM (production builds) -->
+    <!-- React + React-DOM (production builds) -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
@@ -35,11 +35,19 @@
             complete: (results) => {
               const cleaned = results.data
                 .filter((row) => row.Client && row.Targetting)
-                .map((row) => ({
-                  name: row.Client.trim(),
-                  location: row.Targetting.trim(),
-                  radius: row.Radius?.trim() || null,
-                }));
+                .map((row) => {
+                  const excludeFlag =
+                    (row.Exclude || row.exclude || row.Type || "")
+                      .toString()
+                      .toLowerCase()
+                      .includes("exclude");
+                  return {
+                    name: row.Client.trim(),
+                    location: row.Targetting.trim(),
+                    radius: row.Radius?.trim() || null,
+                    exclude: excludeFlag,
+                  };
+                });
               resolve(cleaned);
             },
           });
@@ -49,7 +57,8 @@
       function App() {
         const [clients, setClients] = useState([]);
         const [query, setQuery] = useState("");
-        const [copied, setCopied] = useState(false);
+        const [copiedInclude, setCopiedInclude] = useState(false);
+        const [copiedExclude, setCopiedExclude] = useState(false);
 
         useEffect(() => {
           loadClients().then(setClients);
@@ -59,14 +68,15 @@
           c.name.toLowerCase().includes(query.toLowerCase())
         );
 
-        // ZIP / County rows ⇒ no radius value
-        const eligible = filtered.filter((c) => !c.radius);
+        // For copy buttons — ZIP/County rows, no radius
+        const includedRows = filtered.filter((c) => !c.radius && !c.exclude);
+        const excludedRows = filtered.filter((c) => !c.radius && c.exclude);
 
-        const handleCopy = () => {
-          if (eligible.length === 0) return;
-          navigator.clipboard.writeText(eligible.map((c) => c.location).join("\n"));
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
+        const copyRows = (rows, setFlag) => {
+          if (rows.length === 0) return;
+          navigator.clipboard.writeText(rows.map((c) => c.location).join("\n"));
+          setFlag(true);
+          setTimeout(() => setFlag(false), 2000);
         };
 
         return (
@@ -83,14 +93,25 @@
 
             {query && (
               <div className="w-full max-w-2xl">
-                {eligible.length > 0 && (
-                  <button
-                    onClick={handleCopy}
-                    className="mb-4 inline-flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white transition hover:bg-sky-700 focus:outline-none"
-                  >
-                    {copied ? "Copied!" : "Copy locations"}
-                  </button>
-                )}
+                <div className="flex flex-wrap gap-4 mb-4">
+                  {includedRows.length > 0 && (
+                    <button
+                      onClick={() => copyRows(includedRows, setCopiedInclude)}
+                      className="inline-flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white transition hover:bg-sky-700 focus:outline-none"
+                    >
+                      {copiedInclude ? "Copied!" : "Copy locations"}
+                    </button>
+                  )}
+
+                  {excludedRows.length > 0 && (
+                    <button
+                      onClick={() => copyRows(excludedRows, setCopiedExclude)}
+                      className="inline-flex items-center gap-2 rounded-lg bg-rose-600 px-4 py-2 font-medium text-white transition hover:bg-rose-700 focus:outline-none"
+                    >
+                      {copiedExclude ? "Copied!" : "Copy EXCLUDES"}
+                    </button>
+                  )}
+                </div>
 
                 {filtered.length > 0 ? (
                   <table className="w-full text-left border-collapse shadow-lg">
@@ -98,7 +119,7 @@
                       <tr className="bg-sky-100">
                         <th className="p-3">Client</th>
                         <th className="p-3">Location</th>
-                        <th className="p-3">Radius</th>
+                        <th className="p-3">Status / Radius</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -106,7 +127,9 @@
                         <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-slate-50/60"}>
                           <td className="p-3 font-medium text-slate-800">{c.name}</td>
                           <td className="p-3 text-slate-700">{c.location}</td>
-                          <td className="p-3 text-slate-700">{c.radius ?? "—"}</td>
+                          <td className="p-3 text-slate-700">
+                            {c.exclude ? "Exclude" : c.radius ?? "—"}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -124,3 +147,4 @@
     </script>
   </body>
 </html>
+
