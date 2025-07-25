@@ -79,8 +79,12 @@
           c.name.toLowerCase().includes(query.toLowerCase())
         );
 
+        // Grouped rows
+        const radiusRows = filtered.filter((c) => c.radius && !c.exclude);
         const includedRows = filtered.filter((c) => !c.radius && !c.exclude);
-        const excludedRows = filtered.filter((c) => !c.radius && c.exclude);
+        const excludedRows = filtered.filter((c) => c.exclude);
+
+        const orderedRows = [...radiusRows, ...includedRows, ...excludedRows];
 
         const copyRows = (rows, setFlag) => {
           if (rows.length === 0) return;
@@ -123,7 +127,7 @@
                   )}
                 </div>
 
-                {filtered.length > 0 ? (
+                {orderedRows.length > 0 ? (
                   <table className="w-full text-left border-collapse shadow-lg rounded-lg overflow-hidden">
                     <thead>
                       <tr className="bg-sky-100">
@@ -133,16 +137,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {filtered.map((c, idx) => {
+                      {orderedRows.map((c, idx) => {
                         const baseRow = idx % 2 === 0 ? "bg-white" : "bg-slate-50/60";
                         const excludeRow = c.exclude ? "bg-rose-50 border-l-4 border-rose-500" : "";
-                        const radiusRow = c.radius && !c.exclude ? "bg-amber-50 border-l-4 border-amber-500" : "";
+                        const radiusRow = c.radius && !c.exclude ? "bg-emerald-50 border-l-4 border-emerald-500" : "";
                         const rowClass = `${baseRow} ${excludeRow || radiusRow}`;
 
                         const locationColor = c.exclude
                           ? "text-rose-700"
                           : c.radius
-                          ? "text-amber-700"
+                          ? "text-emerald-700"
                           : "text-slate-700";
 
                         return (
@@ -157,7 +161,7 @@
                                   Exclude
                                 </span>
                               ) : c.radius ? (
-                                <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700 tracking-wide">
+                                <span className="inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 tracking-wide">
                                   {c.radius}
                                 </span>
                               ) : (
