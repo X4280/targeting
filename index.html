@@ -33,7 +33,7 @@
 
     <!-- App code (static CSV in repo) -->
     <script type="text/babel">
-      const { useState, useEffect } = React;
+      const { useState, useEffect, useRef } = React;
 
       const CSV_URL = "clients.csv"; // CSV lives next to this file on Vercel
 
@@ -71,11 +71,24 @@
         const [copiedInclude, setCopiedInclude] = useState(false);
         const [copiedExclude, setCopiedExclude] = useState(false);
         const [copiedRow, setCopiedRow] = useState(null); // track clicked radius row index
+        const [showSuggestions, setShowSuggestions] = useState(false);
+        const inputRef = useRef(null);
 
         useEffect(() => {
           loadClients().then(setClients);
         }, []);
 
+        // List of unique client names
+        const uniqueClients = React.useMemo(() => {
+          return Array.from(new Set(clients.map((c) => c.name))).sort();
+        }, [clients]);
+
+        // Suggestions based on current query
+        const suggestions = query
+          ? uniqueClients.filter((n) => n.toLowerCase().includes(query.toLowerCase())).slice(0, 10)
+          : uniqueClients.slice(0, 10);
+
+        // Filter dataset by query (exact match or substring) – same as before
         const filtered = clients.filter((c) =>
           c.name.toLowerCase().includes(query.toLowerCase())
         );
@@ -100,17 +113,56 @@
           setTimeout(() => setCopiedRow(null), 1500);
         };
 
+        const handleSuggestionClick = (name) => {
+          setQuery(name);
+          setShowSuggestions(false);
+          // Focus out of the input so dropdown closes
+          inputRef.current?.blur();
+        };
+
+        // Close suggestions on outside click
+        useEffect(() => {
+          function handleClick(e) {
+            if (!inputRef.current) return;
+            if (!inputRef.current.contains(e.target)) {
+              setShowSuggestions(false);
+            }
+          }
+          document.addEventListener("click", handleClick);
+          return () => document.removeEventListener("click", handleClick);
+        }, []);
+
         return (
           <main className="min-h-screen flex flex-col items-center p-8 gap-8">
             <h1 className="text-3xl font-bold text-slate-800">Client ➜ Targeting Lookup</h1>
 
-            <input
-              type="text"
-              placeholder="Type client name (e.g. Essential)"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="w-full max-w-md rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400"
-            />
+            <div className="relative w-full max-w-md" ref={inputRef}>
+              <input
+                type="text"
+                placeholder="Start typing client name…"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                className="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400"
+              />
+
+              {showSuggestions && suggestions.length > 0 && (
+                <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-slate-200 bg-white shadow-lg">
+                  {suggestions.map((name) => (
+                    <li
+                      key={name}
+                      onClick={() => handleSuggestionClick(name)}
+                      className="cursor-pointer px-4 py-2 hover:bg-slate-100"
+                    >
+                      {name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
             {query && (
               <div className="w-full max-w-2xl">
