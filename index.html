@@ -8,7 +8,7 @@
     <!-- Tailwind (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Help Safari/WebKit respect user-select:none inside table cells */
+      /* Prevent accidental selection of non‑copy columns */
       td.select-none,
       th.select-none {
         -webkit-user-select: none;
@@ -136,17 +136,32 @@
                       {filtered.map((c, idx) => {
                         const baseRow = idx % 2 === 0 ? "bg-white" : "bg-slate-50/60";
                         const excludeRow = c.exclude ? "bg-rose-50 border-l-4 border-rose-500" : "";
+                        const radiusRow = c.radius && !c.exclude ? "bg-amber-50 border-l-4 border-amber-500" : "";
+                        const rowClass = `${baseRow} ${excludeRow || radiusRow}`;
+
+                        const locationColor = c.exclude
+                          ? "text-rose-700"
+                          : c.radius
+                          ? "text-amber-700"
+                          : "text-slate-700";
+
                         return (
-                          <tr key={idx} className={`${baseRow} ${excludeRow}`}>
-                            <td className="p-3 font-medium text-slate-800 whitespace-nowrap select-none">{c.name}</td>
-                            <td className={`p-3 ${c.exclude ? "text-rose-700" : "text-slate-700"} select-text`}>{c.location}</td>
+                          <tr key={idx} className={rowClass}>
+                            <td className="p-3 font-medium text-slate-800 whitespace-nowrap select-none">
+                              {c.name}
+                            </td>
+                            <td className={`p-3 ${locationColor} select-text`}>{c.location}</td>
                             <td className="p-3 select-none">
                               {c.exclude ? (
                                 <span className="inline-block rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700 uppercase tracking-wide">
                                   Exclude
                                 </span>
+                              ) : c.radius ? (
+                                <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700 tracking-wide">
+                                  {c.radius}
+                                </span>
                               ) : (
-                                c.radius ?? "—"
+                                "—"
                               )}
                             </td>
                           </tr>
@@ -167,4 +182,3 @@
     </script>
   </body>
 </html>
-
