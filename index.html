@@ -70,6 +70,7 @@
         const [query, setQuery] = useState("");
         const [copiedInclude, setCopiedInclude] = useState(false);
         const [copiedExclude, setCopiedExclude] = useState(false);
+        const [copiedRow, setCopiedRow] = useState(null); // track clicked radius row index
 
         useEffect(() => {
           loadClients().then(setClients);
@@ -93,6 +94,12 @@
           setTimeout(() => setFlag(false), 2000);
         };
 
+        const handleRadiusClick = (idx, location) => {
+          navigator.clipboard.writeText(location);
+          setCopiedRow(idx);
+          setTimeout(() => setCopiedRow(null), 1500);
+        };
+
         return (
           <main className="min-h-screen flex flex-col items-center p-8 gap-8">
             <h1 className="text-3xl font-bold text-slate-800">Client ➜ Targeting Lookup</h1>
@@ -102,87 +109,3 @@
               placeholder="Type client name (e.g. Essential)"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full max-w-md rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400"
-            />
-
-            {query && (
-              <div className="w-full max-w-2xl">
-                <div className="flex flex-wrap gap-4 mb-4">
-                  {includedRows.length > 0 && (
-                    <button
-                      onClick={() => copyRows(includedRows, setCopiedInclude)}
-                      className="inline-flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white transition hover:bg-sky-700 focus:outline-none"
-                    >
-                      {copiedInclude ? "Copied!" : "Copy locations"}
-                    </button>
-                  )}
-
-                  {excludedRows.length > 0 && (
-                    <button
-                      onClick={() => copyRows(excludedRows, setCopiedExclude)}
-                      className="inline-flex items-center gap-2 rounded-lg bg-rose-600 px-4 py-2 font-medium text-white transition hover:bg-rose-700 focus:outline-none"
-                    >
-                      {copiedExclude ? "Copied!" : "Copy EXCLUDES"}
-                    </button>
-                  )}
-                </div>
-
-                {orderedRows.length > 0 ? (
-                  <table className="w-full text-left border-collapse shadow-lg rounded-lg overflow-hidden">
-                    <thead>
-                      <tr className="bg-sky-100">
-                        <th className="p-3 select-none">Client</th>
-                        <th className="p-3">Location</th>
-                        <th className="p-3 select-none">Status / Radius</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orderedRows.map((c, idx) => {
-                        const baseRow = idx % 2 === 0 ? "bg-white" : "bg-slate-50/60";
-                        const excludeRow = c.exclude ? "bg-rose-50 border-l-4 border-rose-500" : "";
-                        const radiusRow = c.radius && !c.exclude ? "bg-emerald-50 border-l-4 border-emerald-500" : "";
-                        const rowClass = `${baseRow} ${excludeRow || radiusRow}`;
-
-                        const locationColor = c.exclude
-                          ? "text-rose-700"
-                          : c.radius
-                          ? "text-emerald-700"
-                          : "text-slate-700";
-
-                        return (
-                          <tr key={idx} className={rowClass}>
-                            <td className="p-3 font-medium text-slate-800 whitespace-nowrap select-none">
-                              {c.name}
-                            </td>
-                            <td className={`p-3 ${locationColor} select-text`}>{c.location}</td>
-                            <td className="p-3 select-none">
-                              {c.exclude ? (
-                                <span className="inline-block rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700 uppercase tracking-wide">
-                                  Exclude
-                                </span>
-                              ) : c.radius ? (
-                                <span className="inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 tracking-wide">
-                                  {c.radius}
-                                </span>
-                              ) : (
-                                "—"
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p className="text-slate-500 mt-4">No matches found.</p>
-                )}
-              </div>
-            )}
-          </main>
-        );
-      }
-
-      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
-    </script>
-  </body>
-</html>
