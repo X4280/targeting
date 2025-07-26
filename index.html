@@ -1,14 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="nojs">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Client ➜ Targeting Lookup</title>
 
-    <!-- Tailwind (CDN) -->
+    <!-- Tailwind (CDN) with dark‑mode class strategy -->
+    <script>
+      // Inject the "dark" class _before_ Tailwind loads to avoid flash
+      (function () {
+        const stored = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (stored === "dark" || (!stored && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+        document.documentElement.classList.remove("nojs");
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Prevent accidental selection of non‑copy columns */
       td.select-none,
       th.select-none {
         -webkit-user-select: none;
@@ -16,9 +26,17 @@
         -ms-user-select: none;
         user-select: none;
       }
+      /* Smooth scroll for the dropdown */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(100, 116, 139, 0.4);
+        border-radius: 3px;
+      }
     </style>
   </head>
-  <body class="bg-slate-50">
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
     <div id="root"></div>
 
     <!-- React + React‑DOM (production builds) -->
@@ -31,11 +49,11 @@
     <!-- PapaParse for CSV parsing -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-    <!-- App code (static CSV in repo) -->
+    <!-- App code -->
     <script type="text/babel">
       const { useState, useEffect, useRef } = React;
 
-      const CSV_URL = "clients.csv"; // CSV lives next to this file on Vercel
+      const CSV_URL = "clients.csv";
 
       async function loadClients() {
         const res = await fetch(CSV_URL);
@@ -65,35 +83,86 @@
         });
       }
 
+      function ThemeToggle({ dark, setDark }) {
+        return (
+          <button
+            onClick={() => setDark((d) => !d)}
+            className="rounded-full border border-slate-300 dark:border-slate-600 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            title="Toggle theme"
+          >
+            {dark ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="h-5 w-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 3v1.5M12 19.5V21m9-9h-1.5M4.5 12H3m15.364-6.364l-1.06 1.06M6.697 17.303l-1.06 1.06m0-12.728 1.06 1.06m12.728 12.728-1.06-1.06M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="h-5 w-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.752 15.002A9.718 9.718 0 0112 21.75 9.75 9.75 0 0112 2.25a9.718 9.718 0 019.752 6.748 7.501 7.501 0 000 6.004z"
+                />
+              </svg>
+            )}
+          </button>
+        );
+      }
+
       function App() {
         const [clients, setClients] = useState([]);
         const [query, setQuery] = useState("");
         const [copiedInclude, setCopiedInclude] = useState(false);
         const [copiedExclude, setCopiedExclude] = useState(false);
-        const [copiedRow, setCopiedRow] = useState(null); // track clicked radius row index
+        const [copiedRow, setCopiedRow] = useState(null);
         const [showSuggestions, setShowSuggestions] = useState(false);
+        const [dark, setDark] = useState(() =>
+          document.documentElement.classList.contains("dark")
+        );
         const inputRef = useRef(null);
 
         useEffect(() => {
           loadClients().then(setClients);
         }, []);
 
-        // List of unique client names
+        useEffect(() => {
+          if (dark) {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+          }
+        }, [dark]);
+
         const uniqueClients = React.useMemo(() => {
           return Array.from(new Set(clients.map((c) => c.name))).sort();
         }, [clients]);
 
-        // Suggestions based on current query
         const suggestions = query
           ? uniqueClients.filter((n) => n.toLowerCase().includes(query.toLowerCase())).slice(0, 10)
           : uniqueClients.slice(0, 10);
 
-        // Filter dataset by query (exact match or substring) – same as before
         const filtered = clients.filter((c) =>
           c.name.toLowerCase().includes(query.toLowerCase())
         );
 
-        // Grouped rows
         const radiusRows = filtered.filter((c) => c.radius && !c.exclude);
         const includedRows = filtered.filter((c) => !c.radius && !c.exclude);
         const excludedRows = filtered.filter((c) => c.exclude);
@@ -116,27 +185,32 @@
         const handleSuggestionClick = (name) => {
           setQuery(name);
           setShowSuggestions(false);
-          // Focus out of the input so dropdown closes
           inputRef.current?.blur();
         };
 
-        // Close suggestions on outside click
         useEffect(() => {
-          function handleClick(e) {
+          const handler = (e) => {
             if (!inputRef.current) return;
             if (!inputRef.current.contains(e.target)) {
               setShowSuggestions(false);
             }
-          }
-          document.addEventListener("click", handleClick);
-          return () => document.removeEventListener("click", handleClick);
+          };
+          document.addEventListener("click", handler);
+          return () => document.removeEventListener("click", handler);
         }, []);
 
         return (
-          <main className="min-h-screen flex flex-col items-center p-8 gap-8">
-            <h1 className="text-3xl font-bold text-slate-800">Client ➜ Targeting Lookup</h1>
+          <main className="min-h-screen flex flex-col items-center p-6 sm:p-8 gap-8">
+            {/* Header */}
+            <header className="w-full max-w-4xl flex items-center justify-between">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+                Client ➜ Targeting Lookup
+              </h1>
+              <ThemeToggle dark={dark} setDark={setDark} />
+            </header>
 
-            <div className="relative w-full max-w-md" ref={inputRef}>
+            {/* Search box with autocomplete */}
+            <div className="relative w-full max-w-4xl" ref={inputRef}>
               <input
                 type="text"
                 placeholder="Start typing client name…"
@@ -146,16 +220,16 @@
                   setShowSuggestions(true);
                 }}
                 onFocus={() => setShowSuggestions(true)}
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-600"
               />
 
               {showSuggestions && suggestions.length > 0 && (
-                <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-slate-200 bg-white shadow-lg">
+                <ul className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg">
                   {suggestions.map((name) => (
                     <li
                       key={name}
                       onClick={() => handleSuggestionClick(name)}
-                      className="cursor-pointer px-4 py-2 hover:bg-slate-100"
+                      className="cursor-pointer px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700"
                     >
                       {name}
                     </li>
@@ -164,13 +238,14 @@
               )}
             </div>
 
+            {/* Action buttons & table */}
             {query && (
-              <div className="w-full max-w-2xl">
+              <div className="w-full max-w-4xl">
                 <div className="flex flex-wrap gap-4 mb-4">
                   {includedRows.length > 0 && (
                     <button
                       onClick={() => copyRows(includedRows, setCopiedInclude)}
-                      className="inline-flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white transition hover:bg-sky-700 focus:outline-none"
+                      className="inline-flex items-center gap-2 rounded-lg bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 px-4 py-2 font-medium text-white transition"
                     >
                       {copiedInclude ? "Copied!" : "Copy locations"}
                     </button>
@@ -179,7 +254,7 @@
                   {excludedRows.length > 0 && (
                     <button
                       onClick={() => copyRows(excludedRows, setCopiedExclude)}
-                      className="inline-flex items-center gap-2 rounded-lg bg-rose-600 px-4 py-2 font-medium text-white transition hover:bg-rose-700 focus:outline-none"
+                      className="inline-flex items-center gap-2 rounded-lg bg-rose-600 hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-600 px-4 py-2 font-medium text-white transition"
                     >
                       {copiedExclude ? "Copied!" : "Copy EXCLUDES"}
                     </button>
@@ -187,58 +262,67 @@
                 </div>
 
                 {orderedRows.length > 0 ? (
-                  <table className="w-full text-left border-collapse shadow-lg rounded-lg overflow-hidden">
-                    <thead>
-                      <tr className="bg-sky-100">
-                        <th className="p-3 select-none">Client</th>
-                        <th className="p-3">Location</th>
-                        <th className="p-3 select-none">Status / Radius</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orderedRows.map((c, idx) => {
-                        const isRadius = c.radius && !c.exclude;
-                        const baseRow = idx % 2 === 0 ? "bg-white" : "bg-slate-50/60";
-                        const excludeRow = c.exclude ? "bg-rose-50 border-l-4 border-rose-500" : "";
-                        const radiusRow = isRadius ? "bg-emerald-50 border-l-4 border-emerald-500 cursor-pointer hover:bg-emerald-100" : "";
-                        const rowClass = `${baseRow} ${excludeRow || radiusRow}`;
+                  <div className="overflow-x-auto rounded-lg shadow-lg">
+                    <table className="min-w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-sky-100 dark:bg-slate-800">
+                          <th className="p-3 select-none font-semibold">Client</th>
+                          <th className="p-3 font-semibold">Location</th>
+                          <th className="p-3 select-none font-semibold">Status / Radius</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orderedRows.map((c, idx) => {
+                          const isRadius = c.radius && !c.exclude;
+                          const baseRow =
+                            idx % 2 === 0
+                              ? "bg-white dark:bg-slate-800"
+                              : "bg-slate-50/60 dark:bg-slate-700/50";
+                          const excludeRow = c.exclude
+                            ? "bg-rose-50 dark:bg-rose-950 border-rose-500/80"
+                            : "";
+                          const radiusRow = isRadius
+                            ? "bg-emerald-50 dark:bg-emerald-950 border-emerald-500/80 cursor-pointer hover:bg-emerald-100 dark:hover:bg-emerald-900"
+                            : "";
+                          const rowClass = `${baseRow} ${excludeRow || radiusRow}`;
 
-                        const locationColor = c.exclude
-                          ? "text-rose-700"
-                          : isRadius
-                          ? "text-emerald-700"
-                          : "text-slate-700";
+                          const locationColor = c.exclude
+                            ? "text-rose-700 dark:text-rose-400"
+                            : isRadius
+                            ? "text-emerald-700 dark:text-emerald-400"
+                            : "text-slate-700 dark:text-slate-200";
 
-                        return (
-                          <tr
-                            key={idx}
-                            className={rowClass}
-                            onClick={() => isRadius && handleRadiusClick(idx, c.location)}
-                          >
-                            <td className="p-3 font-medium text-slate-800 whitespace-nowrap select-none">
-                              {c.name}
-                            </td>
-                            <td className={`p-3 ${locationColor} select-text`}>{c.location}</td>
-                            <td className="p-3 select-none">
-                              {c.exclude ? (
-                                <span className="inline-block rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700 uppercase tracking-wide">
-                                  Exclude
-                                </span>
-                              ) : isRadius ? (
-                                <span className="inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 tracking-wide">
-                                  {copiedRow === idx ? "Copied!" : c.radius}
-                                </span>
-                              ) : (
-                                "—"
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                          return (
+                            <tr
+                              key={idx}
+                              className={rowClass + " border-l-4"}
+                              onClick={() => isRadius && handleRadiusClick(idx, c.location)}
+                            >
+                              <td className="p-3 font-medium select-none whitespace-nowrap">
+                                {c.name}
+                              </td>
+                              <td className={`p-3 ${locationColor} select-text`}>{c.location}</td>
+                              <td className="p-3 select-none whitespace-nowrap">
+                                {c.exclude ? (
+                                  <span className="inline-block rounded-full bg-rose-100 dark:bg-rose-900 px-2 py-0.5 text-xs font-semibold text-rose-700 dark:text-rose-300 uppercase tracking-wide">
+                                    Exclude
+                                  </span>
+                                ) : isRadius ? (
+                                  <span className="inline-block rounded-full bg-emerald-100 dark:bg-emerald-900 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 tracking-wide">
+                                    {copiedRow === idx ? "Copied!" : c.radius}
+                                  </span>
+                                ) : (
+                                  "—"
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 ) : (
-                  <p className="text-slate-500 mt-4">No matches found.</p>
+                  <p className="text-slate-500 dark:text-slate-400 mt-4">No matches found.</p>
                 )}
               </div>
             )}
