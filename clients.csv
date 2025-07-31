@@ -219,16 +219,6 @@ Apple Aire,Nebraska,,Exclude
 Apple Aire,Utah,,Exclude
 Apple Aire,Wyoming,,Exclude
 Apple Aire,80614,,Exclude
-Foxy Coatings (Lancaster),"40.335648,-75.926874",85mi,
-Foxy Coatings (Lancaster),"Myerstown, PA",95mi,
-Foxy Coatings (Lancaster),"Maryland, United States",,Exclude
-Foxy Coatings (Lancaster),"New York, United States",,Exclude
-Foxy Coatings (Lancaster),"Philadelphia, Pennsylvania, United States",,Exclude
-Foxy Coatings (Pittsburgh),"Lyndora, Butler Township, PA",100mi,
-Foxy Coatings (Pittsburgh),"Maryland, United States",,Exclude
-Foxy Coatings (Pittsburgh),"Pittsburgh, Pennsylvania, United States",,Exclude
-Foxy Coatings (Pittsburgh),"West Virginia, United States",,Exclude
-Foxy Coatings (Pittsburgh),"New York, United States",,Exclude
 Topline (New York),"Allegany County, New York, United States",,
 Topline (New York),"Broome County, New York, United States",,
 Topline (New York),"Cattaraugus County, New York, United States",,
@@ -334,42 +324,136 @@ Trust 1,"Brockton, MA",,Exclude
 Trust 1,"Everett, MA",,Exclude
 Trust 1,"Natick, MA",,Exclude
 Trust 1,"Waltham, MA",,Exclude
-Good2Go (A.M. Botte),"08080, New Jersey",,
-Good2Go (A.M. Botte),"08056, New Jersey",,
-Good2Go (A.M. Botte),"08097, New Jersey",,
-Good2Go (A.M. Botte),"08031, New Jersey",,
-Good2Go (A.M. Botte),"08081, New Jersey",,
-Good2Go (A.M. Botte),"08085, New Jersey",,
-Good2Go (A.M. Botte),"08302, New Jersey",,
-Good2Go (A.M. Botte),"08071, New Jersey",,
-Good2Go (A.M. Botte),"08020, New Jersey",,
-Good2Go (A.M. Botte),"08096, New Jersey",,
-Good2Go (A.M. Botte),"08021, New Jersey",,
-Good2Go (A.M. Botte),"08094, New Jersey",,
-Good2Go (A.M. Botte),"08322, New Jersey",,
-Good2Go (A.M. Botte),"08332, New Jersey",,
-Good2Go (A.M. Botte),"08012, New Jersey",,
-Good2Go (A.M. Botte),"08060, New Jersey",,
-Good2Go (A.M. Botte),"08093, New Jersey",,
-Good2Go (A.M. Botte),"08084, New Jersey",,
-Good2Go (A.M. Botte),"08312, New Jersey",,
-Good2Go (A.M. Botte),"08014, New Jersey",,
-Good2Go (A.M. Botte),"08360, New Jersey",,
-Good2Go (A.M. Botte),"08028, New Jersey",,
-Good2Go (A.M. Botte),"08051, New Jersey",,
-Good2Go (A.M. Botte),"08029, New Jersey",,
-Good2Go (A.M. Botte),"08083, New Jersey",,
-Good2Go (A.M. Botte),"08343, New Jersey",,
-Good2Go (A.M. Botte),"08027, New Jersey",,
-Good2Go (A.M. Botte),"08361, New Jersey",,
-Good2Go (A.M. Botte),"08062, New Jersey",,
-Good2Go (A.M. Botte),"08090, New Jersey",,
-Good2Go (A.M. Botte),"08078, New Jersey",,
+Good2Go (A.M. Botte),"08106, New Jersey",,
+Good2Go (A.M. Botte),"08107, New Jersey",,
+Good2Go (A.M. Botte),"08108, New Jersey",,
+Good2Go (A.M. Botte),"08109, New Jersey",,
+Good2Go (A.M. Botte),"08110, New Jersey",,
+Good2Go (A.M. Botte),"08002, New Jersey",,
+Good2Go (A.M. Botte),"08003, New Jersey",,
+Good2Go (A.M. Botte),"08034, New Jersey",,
+Good2Go (A.M. Botte),"08004, New Jersey",,
+Good2Go (A.M. Botte),"08007, New Jersey",,
 Good2Go (A.M. Botte),"08009, New Jersey",,
-Good2Go (A.M. Botte),"08098, New Jersey",,
-Good2Go (A.M. Botte),"08066, New Jersey",,
+Good2Go (A.M. Botte),"08091, New Jersey",,
+Good2Go (A.M. Botte),"08031, New Jersey",,
+Good2Go (A.M. Botte),"08099, New Jersey",,
 Good2Go (A.M. Botte),"08033, New Jersey",,
-Good2Go (A.M. Botte),"07083, New Jersey",,
+Good2Go (A.M. Botte),"08035, New Jersey",,
+Good2Go (A.M. Botte),"08030, New Jersey",,
+Good2Go (A.M. Botte),"08043, New Jersey",,
+Good2Go (A.M. Botte),"08045, New Jersey",,
+Good2Go (A.M. Botte),"08049, New Jersey",,
+Good2Go (A.M. Botte),"08059, New Jersey",,
+Good2Go (A.M. Botte),"08078, New Jersey",,
+Good2Go (A.M. Botte),"08081, New Jersey",,
+Good2Go (A.M. Botte),"08083, New Jersey",,
+Good2Go (A.M. Botte),"08084, New Jersey",,
+Good2Go (A.M. Botte),"08089, New Jersey",,
+Good2Go (A.M. Botte),"08095, New Jersey",,
+Good2Go (A.M. Botte),"08010, New Jersey",,
+Good2Go (A.M. Botte),"08011, New Jersey",,
+Good2Go (A.M. Botte),"08016, New Jersey",,
+Good2Go (A.M. Botte),"08022, New Jersey",,
+Good2Go (A.M. Botte),"08036, New Jersey",,
+Good2Go (A.M. Botte),"08041, New Jersey",,
+Good2Go (A.M. Botte),"08042, New Jersey",,
+Good2Go (A.M. Botte),"08518, New Jersey",,
+Good2Go (A.M. Botte),"08554, New Jersey",,
+Good2Go (A.M. Botte),"08505, New Jersey",,
+Good2Go (A.M. Botte),"08046, New Jersey",,
+Good2Go (A.M. Botte),"08048, New Jersey",,
+Good2Go (A.M. Botte),"08052, New Jersey",,
+Good2Go (A.M. Botte),"08053, New Jersey",,
+Good2Go (A.M. Botte),"08054, New Jersey",,
+Good2Go (A.M. Botte),"08055, New Jersey",,
+Good2Go (A.M. Botte),"08057, New Jersey",,
+Good2Go (A.M. Botte),"08060, New Jersey",,
+Good2Go (A.M. Botte),"08064, New Jersey",,
+Good2Go (A.M. Botte),"08065, New Jersey",,
+Good2Go (A.M. Botte),"08073, New Jersey",,
+Good2Go (A.M. Botte),"08075, New Jersey",,
+Good2Go (A.M. Botte),"08076, New Jersey",,
+Good2Go (A.M. Botte),"08077, New Jersey",,
+Good2Go (A.M. Botte),"08001, New Jersey",,
+Good2Go (A.M. Botte),"08023, New Jersey",,
+Good2Go (A.M. Botte),"08038, New Jersey",,
+Good2Go (A.M. Botte),"08067, New Jersey",,
+Good2Go (A.M. Botte),"08069, New Jersey",,
+Good2Go (A.M. Botte),"08070, New Jersey",,
+Good2Go (A.M. Botte),"08072, New Jersey",,
+Good2Go (A.M. Botte),"08079, New Jersey",,
+Good2Go (A.M. Botte),"08098, New Jersey",,
+Good2Go (A.M. Botte),"08014, New Jersey",,
+Good2Go (A.M. Botte),"08020, New Jersey",,
+Good2Go (A.M. Botte),"08025, New Jersey",,
+Good2Go (A.M. Botte),"08027, New Jersey",,
+Good2Go (A.M. Botte),"08028, New Jersey",,
+Good2Go (A.M. Botte),"08032, New Jersey",,
+Good2Go (A.M. Botte),"08039, New Jersey",,
+Good2Go (A.M. Botte),"08051, New Jersey",,
+Good2Go (A.M. Botte),"08056, New Jersey",,
+Good2Go (A.M. Botte),"08061, New Jersey",,
+Good2Go (A.M. Botte),"08062, New Jersey",,
+Good2Go (A.M. Botte),"08063, New Jersey",,
+Good2Go (A.M. Botte),"08066, New Jersey",,
+Good2Go (A.M. Botte),"08071, New Jersey",,
+Good2Go (A.M. Botte),"08074, New Jersey",,
+Good2Go (A.M. Botte),"08080, New Jersey",,
+Good2Go (A.M. Botte),"08085, New Jersey",,
+Good2Go (A.M. Botte),"08086, New Jersey",,
+Good2Go (A.M. Botte),"08090, New Jersey",,
+Good2Go (A.M. Botte),"08093, New Jersey",,
+Good2Go (A.M. Botte),"08094, New Jersey",,
+Good2Go (A.M. Botte),"08096, New Jersey",,
+Good2Go (A.M. Botte),"08097, New Jersey",,
+Good2Go (A.M. Botte),"08312, New Jersey",,
+Good2Go (A.M. Botte),"08322, New Jersey",,
+Good2Go (A.M. Botte),"08328, New Jersey",,
+Good2Go (A.M. Botte),"08343, New Jersey",,
+Good2Go (A.M. Botte),"08344, New Jersey",,
+Good2Go (A.M. Botte),"08037, New Jersey",,
+Good2Go (A.M. Botte),"08094, New Jersey",,
+Good2Go (A.M. Botte),"08201, New Jersey",,
+Good2Go (A.M. Botte),"08205, New Jersey",,
+Good2Go (A.M. Botte),"08213, New Jersey",,
+Good2Go (A.M. Botte),"08215, New Jersey",,
+Good2Go (A.M. Botte),"08217, New Jersey",,
+Good2Go (A.M. Botte),"08220, New Jersey",,
+Good2Go (A.M. Botte),"08221, New Jersey",,
+Good2Go (A.M. Botte),"08225, New Jersey",,
+Good2Go (A.M. Botte),"08231, New Jersey",,
+Good2Go (A.M. Botte),"08232, New Jersey",,
+Good2Go (A.M. Botte),"08234, New Jersey",,
+Good2Go (A.M. Botte),"08240, New Jersey",,
+Good2Go (A.M. Botte),"08241, New Jersey",,
+Good2Go (A.M. Botte),"08244, New Jersey",,
+Good2Go (A.M. Botte),"08270, New Jersey",,
+Good2Go (A.M. Botte),"08310, New Jersey",,
+Good2Go (A.M. Botte),"08317, New Jersey",,
+Good2Go (A.M. Botte),"08319, New Jersey",,
+Good2Go (A.M. Botte),"08326, New Jersey",,
+Good2Go (A.M. Botte),"08330, New Jersey",,
+Good2Go (A.M. Botte),"08340, New Jersey",,
+Good2Go (A.M. Botte),"08341, New Jersey",,
+Good2Go (A.M. Botte),"08342, New Jersey",,
+Good2Go (A.M. Botte),"08344, New Jersey",,
+Good2Go (A.M. Botte),"08346, New Jersey",,
+Good2Go (A.M. Botte),"08350, New Jersey",,
+Good2Go (A.M. Botte),"08210, New Jersey",,
+Good2Go (A.M. Botte),"08214, New Jersey",,
+Good2Go (A.M. Botte),"08218, New Jersey",,
+Good2Go (A.M. Botte),"08219, New Jersey",,
+Good2Go (A.M. Botte),"08223, New Jersey",,
+Good2Go (A.M. Botte),"08230, New Jersey",,
+Good2Go (A.M. Botte),"08242, New Jersey",,
+Good2Go (A.M. Botte),"08245, New Jersey",,
+Good2Go (A.M. Botte),"08246, New Jersey",,
+Good2Go (A.M. Botte),"08248, New Jersey",,
+Good2Go (A.M. Botte),"08250, New Jersey",,
+Good2Go (A.M. Botte),"08251, New Jersey",,
+Good2Go (A.M. Botte),"08252, New Jersey",,
+Good2Go (A.M. Botte),"08270, New Jersey",,
 Glamorgan,"12533, New York",,Exclude
 Glamorgan,"37040, Tennessee",,Exclude
 Glamorgan,"10940, New York",,Exclude
@@ -1173,3 +1257,96 @@ Topline - Ohio (Canton),"Jefferson County, Ohio, United States",,
 Topline - Ohio (Canton),"Mahoning County, Ohio, United States",,
 Topline - Ohio (Canton),"Portage County, Ohio, United States",,
 Topline - Ohio (Canton),"Trumbull County, Ohio, United States",,
+Anna's Air & Heat,"Brevard County, Florida",,
+Anna's Air & Heat,"Titusville, Florida",,Exclude
+Foxy Coatings (Lancaster),"40.335648,-75.926874",85mi,
+Foxy Coatings (Lancaster),"Myerstown, PA",95mi,
+Foxy Coatings (Lancaster),"Baltimore County, Maryland, United States",,
+Foxy Coatings (Lancaster),"Carroll County, Maryland, United States",,
+Foxy Coatings (Lancaster),"Cecil County, Maryland, United States",,
+Foxy Coatings (Lancaster),"Frederick County, Maryland, United States",,
+Foxy Coatings (Lancaster),"Harford County, Maryland, United States",,
+Foxy Coatings (Lancaster),"Kent County, Maryland, United States",,
+Foxy Coatings (Lancaster),"21090, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21240, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21061, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21225, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21062, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21227, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21060, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21226, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21077, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21230, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21076, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21250, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21223, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21075, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21144, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21229, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21203, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21270, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21279, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21281, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21282, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21289, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21275, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21297, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21298, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21273, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21233, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21263, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21264, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21290, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21231, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21201, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21278, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21202, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21287, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21228, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21217, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21224, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21108, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21216, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21205, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21123, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21122, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21222, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21213, Maryland",,Exclude
+Foxy Coatings (Lancaster),"20794, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21211, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21043, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21218, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21241, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21235, Maryland",,Exclude
+Foxy Coatings (Lancaster),"20701, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21146, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21207, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21041, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21045, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21215, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21052, Maryland",,Exclude
+Foxy Coatings (Lancaster),"20763, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21251, Maryland",,Exclude
+Foxy Coatings (Lancaster),"20755, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21046, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21206, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21210, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21113, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21214, Maryland",,Exclude
+Foxy Coatings (Lancaster),"20724, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21212, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21239, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21219, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21209, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21032, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21054, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21244, Maryland",,Exclude
+Foxy Coatings (Lancaster),"21237, Maryland",,Exclude
+Foxy Coatings (Lancaster),"Baltimore, Maryland",,Exclude
+Foxy Coatings (Lancaster),"Philadelphia, Pennsylvania",,Exclude
+Foxy Coatings (Lancaster),"New York, United States",,Exclude
+Foxy Coatings (Pittsburgh),"Lyndora, Butler Township, PA",100mi,
+Foxy Coatings (Pittsburgh),"Maryland, United States",,Exclude
+Foxy Coatings (Pittsburgh),"Pittsburgh, Pennsylvania, United States",,Exclude
+Foxy Coatings (Pittsburgh),"West Virginia, United States",,Exclude
+Foxy Coatings (Pittsburgh),"New York, United States",,Exclude
